@@ -1,6 +1,8 @@
 package alk.respawnplugin;
 
+import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -34,12 +36,24 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(@NotNull PlayerRespawnEvent e)
     {
-        RespawnPlugin.GetInstance().getLogger().info(e.getPlayer().getName() + "Respawn!");
+        Utils.GetLogger().info(e.getPlayer().getName() + "Respawn!");
+
+        Player player = e.getPlayer();
+
+        int life_value = config.getInt(e.getPlayer().getName());
+
+        if ( life_value > 0 ) {
+            int new_value = life_value - 1;
+            config.set(player.getName(), new_value);
+            RespawnPlugin.GetInstance().saveConfig();
+        } else if (player.getGameMode() != GameMode.SPECTATOR) {
+            player.setGameMode(GameMode.SPECTATOR);
+        }
     }
 
     @EventHandler
     public void onPlayerDeath(@NotNull PlayerDeathEvent e)
     {
-        RespawnPlugin.GetInstance().getLogger().info(e.getEntity().getName() + "Death!");
+        Utils.GetLogger().info(e.getEntity().getName() + "Death!");
     }
 }
