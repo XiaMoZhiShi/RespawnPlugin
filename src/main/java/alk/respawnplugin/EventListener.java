@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +32,13 @@ public class EventListener implements Listener {
             //保存
             RespawnPlugin.GetInstance().saveConfig();
         }
+    }
+
+    @EventHandler
+    public void onPlayerLeave(@NotNull PlayerQuitEvent e)
+    {
+        //在RequestCommandPlayerMap中删除由此玩家发出的请求
+        RespawnPlugin.RequestCommandPlayerMap.remove(e.getPlayer());
     }
 
     @EventHandler
