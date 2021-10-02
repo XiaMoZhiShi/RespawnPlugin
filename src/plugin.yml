@@ -1,0 +1,4 @@
+name: Respawn
+main: alk.respawn.Respawn
+version: 1.0
+api-version: 1.17

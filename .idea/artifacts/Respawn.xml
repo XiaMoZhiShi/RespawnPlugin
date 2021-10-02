@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Respawn">
+    <output-path>$PROJECT_DIR$/out/artifacts/Respawn</output-path>
+    <root id="archive" name="Respawn.jar">
+      <element id="module-output" name="respawn" />
+    </root>
+  </artifact>
+</component>
