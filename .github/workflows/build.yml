@@ -13,6 +13,7 @@ jobs:
         with:
           java-version: '16'
           distribution: 'adopt'
+          cache: maven
       - name: 通过Maven构建
         run: mvn --batch-mode --update-snapshots verify
       - name: 复制构建结果
