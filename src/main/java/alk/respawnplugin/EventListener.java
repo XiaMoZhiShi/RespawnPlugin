@@ -35,6 +35,12 @@ public class EventListener extends PluginObject implements Listener {
     {
         //在RequestCommandPlayerMap中删除由此玩家发出的请求
         Plugin.RequestCommandPlayerMap.remove(e.getPlayer());
+
+        //找到并删除所有包含此玩家的请求
+        Plugin.RequestCommandPlayerMap.entrySet()
+                .stream()
+                .filter(filterEntry -> filterEntry.getValue().equals(e.getPlayer()))
+                .forEach(entry -> Plugin.RequestCommandPlayerMap.remove(entry.getKey()));
     }
 
     @EventHandler
