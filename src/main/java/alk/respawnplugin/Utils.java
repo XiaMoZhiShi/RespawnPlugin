@@ -4,8 +4,5 @@ import java.util.logging.Logger;
 
 public class Utils {
 
-    public static Logger GetLogger()
-    {
-        return RespawnPlugin.GetInstance().getLogger();
-    }
+    public static Logger GetLogger() { return RespawnPlugin.GetInstance().getLogger(); }
 }

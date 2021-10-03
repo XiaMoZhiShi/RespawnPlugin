@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="RespawnPlugin-Spigot" />
+        <module name="RespawnPlugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="RespawnPlugin-Spigot" target="1.8" />
+      <module name="RespawnPlugin" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>
