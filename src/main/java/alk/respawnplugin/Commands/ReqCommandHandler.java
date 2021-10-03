@@ -1,6 +1,6 @@
 package alk.respawnplugin.Commands;
 
-import alk.respawnplugin.RespawnPlugin;
+import alk.respawnplugin.PluginObject;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ReqCommandHandler implements CommandExecutor {
+public class ReqCommandHandler extends PluginObject implements CommandExecutor {
     @Override
     public boolean onCommand(
             @NotNull CommandSender sender,
@@ -37,14 +37,14 @@ public class ReqCommandHandler implements CommandExecutor {
         }
 
         //如果已经发送了同样的请求
-        if (RespawnPlugin.RequestCommandPlayerMap.get(sourcePlayer) != null)
+        if (Plugin.RequestCommandPlayerMap.get(sourcePlayer) != null)
         {
             sender.sendMessage("你已经发送过了");
             return true;
         }
 
         //加入PlayerMap
-        RespawnPlugin.RequestCommandPlayerMap.put(sourcePlayer, targetPlayer);
+        Plugin.RequestCommandPlayerMap.put(sourcePlayer, targetPlayer);
 
         //发送消息
         targetPlayer.sendRawMessage("收到来自" + sourcePlayer + "的请求！");

@@ -1,6 +1,6 @@
 package alk.respawnplugin.Commands;
 
-import alk.respawnplugin.RespawnPlugin;
+import alk.respawnplugin.PluginObject;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Optional;
 
-public class ReqAcceptCommandHandler implements CommandExecutor {
+public class ReqAcceptCommandHandler extends PluginObject implements CommandExecutor {
     @Override
     public boolean onCommand(
             @NotNull CommandSender sender,
@@ -31,14 +31,14 @@ public class ReqAcceptCommandHandler implements CommandExecutor {
         if (args.length == 0)
         {
             //在PlayerMap中查询发起玩家
-            optional = RespawnPlugin.RequestCommandPlayerMap.entrySet()
+            optional = Plugin.RequestCommandPlayerMap.entrySet()
                     .stream()
                     .filter(e -> e.getValue().getName().equals(sender.getName())).findFirst();
         }
         else
         {
             //在PlayerMap中查找玩家
-            optional = RespawnPlugin.RequestCommandPlayerMap.entrySet()
+            optional = Plugin.RequestCommandPlayerMap.entrySet()
                     .stream()
                     .filter(e -> e.getKey().getName().equals(args[0])).findFirst();
         }
@@ -66,7 +66,7 @@ public class ReqAcceptCommandHandler implements CommandExecutor {
         ((Player) sender).teleport(sourcePlayer);
 
         //从PlayerMap中移除发起玩家
-        RespawnPlugin.RequestCommandPlayerMap.remove(sourcePlayer);
+        Plugin.RequestCommandPlayerMap.remove(sourcePlayer);
 
         return true;
     }

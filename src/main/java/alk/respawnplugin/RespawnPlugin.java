@@ -24,7 +24,7 @@ public final class RespawnPlugin extends JavaPlugin {
      * Value: 目标玩家
      */
     //Lin: Dictionary<Player, Player>?
-    public static final Map<Player, Player> RequestCommandPlayerMap = new ConcurrentHashMap<>();
+    public final Map<Player, Player> RequestCommandPlayerMap = new ConcurrentHashMap<>();
 
     @Override
     public void onEnable() {
