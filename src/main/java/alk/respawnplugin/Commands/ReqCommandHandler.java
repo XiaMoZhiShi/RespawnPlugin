@@ -18,6 +18,12 @@ public class ReqCommandHandler extends PluginObject implements CommandExecutor {
     {
         if (args.length != 1) return false;
 
+        if (!(sender instanceof Player))
+        {
+            Logger.warning("你不能向其他玩家发送请求！");
+            return true;
+        }
+
         //获取发起玩家和目标玩家
         Player sourcePlayer = (Player)sender;
         Player targetPlayer = Bukkit.getPlayer(args[0]);

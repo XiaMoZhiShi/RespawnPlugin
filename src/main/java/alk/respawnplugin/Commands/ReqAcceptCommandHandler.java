@@ -18,7 +18,13 @@ public class ReqAcceptCommandHandler extends PluginObject implements CommandExec
             @NotNull String label,
             @NotNull String[] args)
     {
-        if (args.length > 1 || !(sender instanceof Player)) return false;
+        if (args.length > 1) return false;
+
+        if (!(sender instanceof Player))
+        {
+            Logger.warning("你不能答应其他玩家的请求！");
+            return true;
+        }
 
         //发起玩家
         Player sourcePlayer = null;
@@ -46,14 +52,14 @@ public class ReqAcceptCommandHandler extends PluginObject implements CommandExec
         //获取Key
         if (optional.isPresent()) sourcePlayer = optional.get().getKey();
 
-        //如果还是没有，那么返回false
+        //如果还是没有，那么返回
         if (sourcePlayer == null)
         {
             sender.sendMessage("未找到玩家或无申请");
             return true;
         }
 
-        //如果玩家不在线，返回false
+        //如果玩家不在线，返回
         if (!sourcePlayer.isOnline())
         {
             sender.sendMessage("该玩家已下线");
