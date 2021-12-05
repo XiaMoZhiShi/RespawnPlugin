@@ -1,10 +1,12 @@
 package alk.respawnplugin;
 
+import com.destroystokyo.paper.event.player.PlayerSetSpawnEvent;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -28,6 +30,11 @@ public class EventListener extends PluginObject implements Listener {
             //保存
             Plugin.saveConfig();
         }
+    }
+
+    @EventHandler
+    public void onPlayerBedLeaveEvent(@NotNull PlayerBedLeaveEvent e){
+        e.setSpawnLocation(false);
     }
 
     @EventHandler
