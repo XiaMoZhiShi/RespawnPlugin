@@ -12,11 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class RespawnPlugin extends JavaPlugin {
 
-    public RespawnPlugin()
-    {
-        //设置pl为this
-        pl = this;
-    }
+    public static JavaPlugin instance;
 
     /**
      * 一个 玩家-玩家 词典，用来记录玩家请求
@@ -34,15 +30,18 @@ public final class RespawnPlugin extends JavaPlugin {
         //保存默认设置
         saveDefaultConfig();
 
+        //创建配置文件
+        saveResource("data.yml", false);
+
         //注册Listener
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+
+        //设置 instance
+        instance = this;
 
         registerCommand("req", new ReqCommandHandler());
         registerCommand("reqaccept", new ReqAcceptCommandHandler());
     }
-
-    private static RespawnPlugin pl;
-    public static RespawnPlugin GetInstance() { return pl; }
 
     @Override
     public void onDisable() {
