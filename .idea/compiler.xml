@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="RespawnPlugin" target="16" />
+      <module name="RespawnPlugin" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
