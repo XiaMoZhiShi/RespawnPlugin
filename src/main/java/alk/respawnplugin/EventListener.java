@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,22 +38,9 @@ public class EventListener extends PluginObject implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeave(@NotNull PlayerQuitEvent e)
-    {
-        //在RequestCommandPlayerMap中删除由此玩家发出的请求
-        Plugin.RequestCommandPlayerMap.remove(e.getPlayer());
-
-        //找到并删除所有包含此玩家的请求
-        Plugin.RequestCommandPlayerMap.entrySet()
-                .stream()
-                .filter(filterEntry -> filterEntry.getValue().equals(e.getPlayer()))
-                .forEach(entry -> Plugin.RequestCommandPlayerMap.remove(entry.getKey()));
-    }
-
-    @EventHandler
     public void onPlayerRespawn(@NotNull PlayerRespawnEvent e)
     {
-        Logger.info(e.getPlayer().getName() + "Respawn!");
+        Logger.info(e.getPlayer().getName() + " Respawn!");
 
         Player player = e.getPlayer();
 
@@ -72,6 +58,6 @@ public class EventListener extends PluginObject implements Listener {
     @EventHandler
     public void onPlayerDeath(@NotNull PlayerDeathEvent e)
     {
-        Logger.info(e.getEntity().getName() + "Death!");
+        Logger.info(e.getEntity().getName() + " Death!");
     }
 }

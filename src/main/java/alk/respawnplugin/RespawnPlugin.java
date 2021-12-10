@@ -1,7 +1,5 @@
 package alk.respawnplugin;
 
-import alk.respawnplugin.Commands.ReqAcceptCommandHandler;
-import alk.respawnplugin.Commands.ReqCommandHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
@@ -47,9 +45,6 @@ public final class RespawnPlugin extends JavaPlugin {
 
         //设置 instance
         instance = this;
-
-        registerCommand("req", new ReqCommandHandler());
-        registerCommand("reqaccept", new ReqAcceptCommandHandler());
     }
 
     @Override
@@ -58,10 +53,4 @@ public final class RespawnPlugin extends JavaPlugin {
         getLogger().info("Shutting down Respawn Rules!");
     }
 
-    private void registerCommand(String name, CommandExecutor executor)
-    {
-        if (Bukkit.getPluginCommand(name) != null) {
-            Bukkit.getPluginCommand(name).setExecutor(executor);
-        }
-    }
 }

@@ -1,19 +1,4 @@
 name: Respawn
 main: alk.respawnplugin.RespawnPlugin
 version: 1.0
-api-version: 1.17
-
-commands:
-  req: # 命令的基本名，请不要使用奇怪的字符！
-    aliases: # 别名，方便玩家使用
-      - "request"
-    usage: "/req <Player>" # 用法
-    description: "Send a request to a player." # 描述
-    permission: "alk.respawn.command.req.send" # 需要的权限，通常不用
-    permission-message: "?" # 无权限返回的消息，通常不用
-
-  reqaccept: # 命令的基本名，请不要使用奇怪的字符！
-    usage: "/reqaccept [Player]" # 用法
-    description: "Accept a request. If no player name is provided, will default to the player who sent it first." # 描述
-    permission: "alk.respawn.command.req.accept" # 需要的权限，通常不用
-    permission-message: "?" # 无权限返回的消息，通常不用
+api-version: 1.18
