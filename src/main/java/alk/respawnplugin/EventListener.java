@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -33,8 +32,10 @@ public class EventListener extends PluginObject implements Listener {
     }
 
     @EventHandler
-    public void onPlayerBedLeaveEvent(@NotNull PlayerBedLeaveEvent e){
-        e.setSpawnLocation(false);
+    public void onPlayer(@NotNull PlayerSetSpawnEvent e){
+        if ( e.getCause() == PlayerSetSpawnEvent.Cause.BED ){
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler

@@ -14,6 +14,15 @@ public final class RespawnPlugin extends JavaPlugin {
 
     public static JavaPlugin instance;
 
+    public RespawnPlugin()
+    {
+        //设置pl为this
+        pl = this;
+    }
+
+    private static RespawnPlugin pl;
+    public static RespawnPlugin GetInstance() { return pl; }
+
     /**
      * 一个 玩家-玩家 词典，用来记录玩家请求
      * Key: 发起玩家

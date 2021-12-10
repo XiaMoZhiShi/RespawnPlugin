@@ -14,6 +14,8 @@ public abstract class PluginObject {
 
     protected PluginObject()
     {
-        Config = Plugin.getConfig();
+        Logger = RespawnPlugin.GetInstance().getLogger();
+        Plugin = RespawnPlugin.GetInstance();
+        Config = RespawnPlugin.GetInstance().getConfig();
     }
 }
