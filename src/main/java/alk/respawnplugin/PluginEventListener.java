@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class EventListener extends PluginObject implements Listener {
+public class PluginEventListener extends PluginObject implements Listener {
     Integer defaultValue = (Integer) Config.get("default-value");
 
     @EventHandler

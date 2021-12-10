@@ -1,5 +1,6 @@
 package alk.respawnplugin;
 
+import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,12 +42,17 @@ public final class RespawnPlugin extends JavaPlugin {
     {
         //设置 instance，确保instance在被调用前不会是null
         instance = this;
+
+        logger = this.getLog4JLogger();
     }
+
+    private Logger logger;
+    private PluginEventListener listener = new PluginEventListener();
 
     @Override
     public void onEnable() {
         //输出启动信息
-        getLogger().info("Starting Respawn Rules Plugin");
+        logger.info("Starting Respawn Rules Plugin");
 
         //保存默认设置
         saveDefaultConfig();
@@ -55,7 +61,7 @@ public final class RespawnPlugin extends JavaPlugin {
         saveResource("data.yml", false);
 
         //注册Listener
-        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+        Bukkit.getPluginManager().registerEvents(listener, this);
 
         DataFolder = this.getDataFolder();
         ConfigFile = new File(DataFolder, "data.yml");
@@ -64,6 +70,6 @@ public final class RespawnPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        getLogger().info("Shutting down Respawn Rules!");
+        logger.info("Shutting down Respawn Rules!");
     }
 }
