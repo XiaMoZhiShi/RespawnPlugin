@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class EventListener extends PluginObject implements Listener {
-    Integer defaulter = (Integer) Config.get("default-value");
+    Integer defaultValue = (Integer) Config.get("default-value");
 
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent e) {
@@ -23,7 +23,7 @@ public class EventListener extends PluginObject implements Listener {
 
         //如果配置名是null（即为新玩家）
         if (inConfigName == null) {
-            Config.set(playerName, defaulter);
+            Config.set(playerName, defaultValue);
 
             //保存
             Plugin.saveConfig();
@@ -31,7 +31,7 @@ public class EventListener extends PluginObject implements Listener {
     }
 
     @EventHandler
-    public void onPlayer(@NotNull PlayerSetSpawnEvent e){
+    public void onPlayerSetSpawn(@NotNull PlayerSetSpawnEvent e){
         if ( e.getCause() == PlayerSetSpawnEvent.Cause.BED ){
             e.setCancelled(true);
         }

@@ -1,7 +1,6 @@
 package alk.respawnplugin;
 
 import org.bukkit.configuration.file.FileConfiguration;
-
 import java.util.logging.Logger;
 
 /**
@@ -14,8 +13,9 @@ public abstract class PluginObject {
 
     protected PluginObject()
     {
-        Logger = RespawnPlugin.GetInstance().getLogger();
         Plugin = RespawnPlugin.GetInstance();
-        Config = RespawnPlugin.GetInstance().getConfig();
+
+        Logger = Plugin.getLogger();
+        Config = Plugin.getConfig();
     }
 }
