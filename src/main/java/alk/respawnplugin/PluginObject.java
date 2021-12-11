@@ -1,8 +1,7 @@
 package alk.respawnplugin;
 
+import org.apache.logging.log4j.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
-
-import java.util.logging.Logger;
 
 /**
  * 在这里存放一些会被经常调用的东西
@@ -14,8 +13,9 @@ public abstract class PluginObject {
 
     protected PluginObject()
     {
-        Logger = RespawnPlugin.GetInstance().getLogger();
         Plugin = RespawnPlugin.GetInstance();
-        Config = RespawnPlugin.GetInstance().getConfig();
+
+        Logger = Plugin.getLog4JLogger();
+        Config = Plugin.getConfig();
     }
 }
