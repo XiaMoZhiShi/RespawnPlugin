@@ -25,7 +25,17 @@ public class PluginConfigManager extends PluginObject implements IConfigManager 
     }
 
     @Override
+    public void savePlayerConfig(UUID id, int value) {
+        data.set("livingvalue." + id.toString(), value);
+    }
+
+    @Override
     public int getPlayerLivingValue(UUID id) {
         return data.getInt("livingvalue." + id.toString(), Integer.parseInt(""));
+    }
+
+    @Override
+    public boolean isExist(UUID id) {
+        return data.contains("livingvalue." + id.toString());
     }
 }

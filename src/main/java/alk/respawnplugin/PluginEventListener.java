@@ -10,23 +10,20 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class PluginEventListener extends PluginObject implements Listener {
     Integer defaultValue = (Integer) Config.get("default-value");
 
+    IConfigManager icm;
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent e) {
-        //获取玩家名
-        String playerName = e.getPlayer().getName();
+        //获取玩家UUID
+        UUID playerUUID = e.getPlayer().getUniqueId();
 
-        //获取玩家在配置中的名字
-        String inConfigName = Config.getString(playerName);
-
-        //如果配置名是null（即为新玩家）
-        if (inConfigName == null) {
-            Config.set(playerName, defaultValue);
-
-            //保存
-            Plugin.saveConfig();
+        //判断玩家是否存在于配置中，若无，设置为配置中的默认值
+        if( icm.isExist(playerUUID) == false){
+            icm.savePlayerConfig(playerUUID, defaultValue);
         }
     }
 
@@ -44,12 +41,11 @@ public class PluginEventListener extends PluginObject implements Listener {
 
         Player player = e.getPlayer();
 
-        int life_value = Config.getInt(e.getPlayer().getName());
+        int life_value = icm.getPlayerLivingValue(player.getUniqueId());
 
         if ( life_value > 0 ) {
             int new_value = life_value - 1;
-            Config.set(player.getName(), new_value);
-            Plugin.saveConfig();
+            icm.savePlayerConfig(player.getUniqueId(), new_value);
         } else if (player.getGameMode() != GameMode.SPECTATOR) {
             player.setGameMode(GameMode.SPECTATOR);
         }
