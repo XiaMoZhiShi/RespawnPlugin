@@ -15,15 +15,14 @@ import java.util.UUID;
 public class PluginEventListener extends PluginObject implements Listener {
     Integer defaultValue = (Integer) Config.get("default-value");
 
-    IConfigManager icm;
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent e) {
         //获取玩家UUID
         UUID playerUUID = e.getPlayer().getUniqueId();
 
         //判断玩家是否存在于配置中，若无，设置为配置中的默认值
-        if( icm.isExist(playerUUID) == false){
-            icm.savePlayerConfig(playerUUID, defaultValue);
+        if( ConfigManager.isExist(playerUUID) == false){
+            ConfigManager.savePlayerConfig(playerUUID, defaultValue);
         }
     }
 
@@ -41,11 +40,11 @@ public class PluginEventListener extends PluginObject implements Listener {
 
         Player player = e.getPlayer();
 
-        int life_value = icm.getPlayerLivingValue(player.getUniqueId());
+        int life_value = ConfigManager.getPlayerLivingValue(player.getUniqueId());
 
         if ( life_value > 0 ) {
             int new_value = life_value - 1;
-            icm.savePlayerConfig(player.getUniqueId(), new_value);
+            ConfigManager.savePlayerConfig(player.getUniqueId(), new_value);
         } else if (player.getGameMode() != GameMode.SPECTATOR) {
             player.setGameMode(GameMode.SPECTATOR);
         }

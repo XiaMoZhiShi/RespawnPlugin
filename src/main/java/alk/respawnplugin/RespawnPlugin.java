@@ -38,16 +38,20 @@ public final class RespawnPlugin extends JavaPlugin {
     //Lin: Dictionary<Player, Player>?
     public final Map<Player, Player> RequestCommandPlayerMap = new ConcurrentHashMap<>();
 
+    private Logger logger;
+    private PluginEventListener listener;
+    public final PluginConfigManager ConfigManager;
+
     public RespawnPlugin()
     {
         //设置 instance，确保instance在被调用前不会是null
         instance = this;
 
         logger = this.getLog4JLogger();
-    }
+        ConfigManager = new PluginConfigManager();
 
-    private Logger logger;
-    private PluginEventListener listener = new PluginEventListener();
+        listener = new PluginEventListener();
+    }
 
     @Override
     public void onEnable() {

@@ -10,6 +10,7 @@ public abstract class PluginObject {
     protected Logger Logger;
     protected RespawnPlugin Plugin;
     protected FileConfiguration Config;
+    protected IConfigManager ConfigManager;
 
     protected PluginObject()
     {
@@ -17,5 +18,6 @@ public abstract class PluginObject {
 
         Logger = Plugin.getLog4JLogger();
         Config = Plugin.getConfig();
+        ConfigManager = Plugin.ConfigManager;
     }
 }
