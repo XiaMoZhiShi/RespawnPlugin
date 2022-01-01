@@ -49,8 +49,11 @@ public final class RespawnPlugin extends JavaPlugin {
 
         logger = this.getLog4JLogger();
         ConfigManager = new PluginConfigManager();
+        DataFolder = this.getDataFolder();
+        ConfigFile = new File(DataFolder, "data.yml");
 
         listener = new PluginEventListener();
+        ConfigManager.loadAll();
     }
 
     @Override
@@ -66,9 +69,6 @@ public final class RespawnPlugin extends JavaPlugin {
 
         //注册Listener
         Bukkit.getPluginManager().registerEvents(listener, this);
-
-        DataFolder = this.getDataFolder();
-        ConfigFile = new File(DataFolder, "data.yml");
     }
 
     @Override

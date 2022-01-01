@@ -3,12 +3,14 @@ package alk.respawnplugin;
 import org.apache.logging.log4j.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
 public class PluginConfigManager extends PluginObject implements IConfigManager {
-    static FileConfiguration data;
-    
+    private FileConfiguration data;
+
     @Override
     public void saveAll() {
         try {
@@ -20,7 +22,8 @@ public class PluginConfigManager extends PluginObject implements IConfigManager 
     }
 
     @Override
-    public void loadAll() {
+    public void loadAll()
+    {
         data = YamlConfiguration.loadConfiguration(Plugin.ConfigFile);
     }
 
