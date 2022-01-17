@@ -32,8 +32,9 @@ public class PluginEventListener extends PluginObject implements Listener {
 
     @EventHandler
     public void onPlayerSetSpawn(@NotNull PlayerSetSpawnEvent e){
-        if ( e.getCause() == PlayerSetSpawnEvent.Cause.BED ){
+        if ( e.getCause() == PlayerSetSpawnEvent.Cause.BED || e.getCause() == PlayerSetSpawnEvent.Cause.RESPAWN_ANCHOR ){
             e.setCancelled(true);
+            e.getPlayer().sendMessage("\uE410你的重生点不会被更改\uE410");
         }
     }
 
@@ -45,13 +46,13 @@ public class PluginEventListener extends PluginObject implements Listener {
         Player player = e.getPlayer();
 
         int life_value = Config.getInt(e.getPlayer().getName());
+        RemainingHealth = life_value;
 
-        if ( life_value > 0 ) {
-            int new_value = life_value - 1;
-            Config.set(player.getName(), new_value);
-            Plugin.saveConfig();
-        } else if (player.getGameMode() != GameMode.SPECTATOR) {
-            player.setGameMode(GameMode.SPECTATOR);
+        if (life_value == 0){
+            e.getPlayer().setGameMode(GameMode.SPECTATOR);
+            e.getPlayer().showTitle(titleHealthRunOut);
+        } else {
+            e.getPlayer().showTitle(titleHealthRemaining);
         }
     }
 
@@ -59,5 +60,16 @@ public class PluginEventListener extends PluginObject implements Listener {
     public void onPlayerDeath(@NotNull PlayerDeathEvent e)
     {
         Logger.info(e.getEntity().getName() + " Death!");
+        int life_value = Config.getInt(e.getPlayer().getName());
+
+        if ( life_value > 0 ) {
+            int new_value = life_value - 1;
+            Config.set(e.getPlayer().getName(), new_value);
+            Plugin.saveConfig();
+            if (new_value == 0) {
+                e.setKeepInventory(false);
+                e.setDeathMessage("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束");
+            }
+        }
     }
 }
