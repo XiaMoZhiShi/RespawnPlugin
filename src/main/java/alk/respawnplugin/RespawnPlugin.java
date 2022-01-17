@@ -38,16 +38,19 @@ public final class RespawnPlugin extends JavaPlugin {
     //Lin: Dictionary<Player, Player>?
     public final Map<Player, Player> RequestCommandPlayerMap = new ConcurrentHashMap<>();
 
+    private Logger logger;
+    private PluginEventListener listener;
+
     public RespawnPlugin()
     {
         //设置 instance，确保instance在被调用前不会是null
         instance = this;
 
         logger = this.getLog4JLogger();
+        DataFolder = this.getDataFolder();
+        ConfigFile = new File(DataFolder, "data.yml");
+        listener = new PluginEventListener();
     }
-
-    private Logger logger;
-    private PluginEventListener listener = new PluginEventListener();
 
     @Override
     public void onEnable() {
@@ -62,8 +65,6 @@ public final class RespawnPlugin extends JavaPlugin {
 
         //注册Listener
         Bukkit.getPluginManager().registerEvents(listener, this);
-        DataFolder = this.getDataFolder();
-        ConfigFile = new File(DataFolder, "data.yml");
     }
 
     @Override
