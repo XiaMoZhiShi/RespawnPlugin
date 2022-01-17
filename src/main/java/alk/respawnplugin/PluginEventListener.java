@@ -54,14 +54,14 @@ public class PluginEventListener extends PluginObject implements Listener {
         RemainingHealth = life_value;
         titleHealthRemaining = new TextComponent("\uE461 你的死亡回归加护剩余 \uE46E * " + RemainingHealth);
 
-        if (life_value == 0){
+        if (life_value == -1){
             e.getPlayer().setGameMode(GameMode.SPECTATOR);
             e.getPlayer().showTitle(titleHealthRunOut);
         } else {
             e.getPlayer().showTitle(titleHealthRemaining);
         }
 
-        if (life_value > 0 && e.getPlayer().getGameMode() == GameMode.SPECTATOR){
+        if (life_value >= 0 && e.getPlayer().getGameMode() == GameMode.SPECTATOR){
             e.getPlayer().setGameMode(GameMode.SURVIVAL);
         }
     }
@@ -72,12 +72,12 @@ public class PluginEventListener extends PluginObject implements Listener {
         Logger.info(e.getEntity().getName() + " Death!");
         int life_value = Config.getInt(e.getPlayer().getName());
 
-        if ( life_value > 0 ) {
+        if ( life_value >= 0 ) {
             int new_value = life_value - 1;
             Config.set(e.getPlayer().getName(), new_value);
             Plugin.saveConfig();
         }
-        if (life_value == 1 || life_value == 0) {
+        if (life_value == -1) {
             e.setKeepInventory(false);
             e.setDeathMessage("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束");
         }
