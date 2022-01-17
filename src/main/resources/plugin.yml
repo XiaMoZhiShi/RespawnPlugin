@@ -2,3 +2,11 @@ name: Respawn
 main: alk.respawnplugin.RespawnPlugin
 version: 1.0
 api-version: 1.18
+commands:
+  respawnset:
+    aliases:
+      - "resps"
+    usage: "/respawnset <player-name> <value: int>"
+    description: "设置目标玩家的剩余死亡回归加护次数"
+    permission: "minecraft.admin"
+    permission-message: "Only OP can do this"

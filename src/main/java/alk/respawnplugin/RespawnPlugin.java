@@ -65,6 +65,11 @@ public final class RespawnPlugin extends JavaPlugin {
 
         //注册Listener
         Bukkit.getPluginManager().registerEvents(listener, this);
+
+        //注册 respawnset 指令
+        if (Bukkit.getPluginCommand("respawnset") != null) {
+            Bukkit.getPluginCommand("respawnset").setExecutor(new CommandRespawnset());
+        }
     }
 
     @Override
