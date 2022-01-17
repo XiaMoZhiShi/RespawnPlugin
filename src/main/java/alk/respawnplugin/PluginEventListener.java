@@ -56,6 +56,10 @@ public class PluginEventListener extends PluginObject implements Listener {
         } else {
             e.getPlayer().showTitle(titleHealthRemaining);
         }
+
+        if (life_value > 0 && e.getPlayer().getGameMode() == GameMode.SPECTATOR){
+            e.getPlayer().setGameMode(GameMode.SURVIVAL);
+        }
     }
 
     @EventHandler
@@ -69,7 +73,7 @@ public class PluginEventListener extends PluginObject implements Listener {
             Config.set(e.getPlayer().getName(), new_value);
             Plugin.saveConfig();
         }
-        if (Config.getInt(e.getPlayer().getName()) == 0) {
+        if (life_value == 1 || life_value == 0) {
             e.setKeepInventory(false);
             e.setDeathMessage("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束");
         }
