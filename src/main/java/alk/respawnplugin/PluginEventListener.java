@@ -1,6 +1,7 @@
 package alk.respawnplugin;
 
 import com.destroystokyo.paper.event.player.PlayerSetSpawnEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,6 +48,7 @@ public class PluginEventListener extends PluginObject implements Listener {
 
         int life_value = Config.getInt(e.getPlayer().getName());
         RemainingHealth = life_value;
+        titleHealthRemaining = new TextComponent("\uE461 你的死亡回归加护剩余 \uE46E * " + RemainingHealth);
 
         if (life_value == 0){
             e.getPlayer().setGameMode(GameMode.SPECTATOR);
@@ -66,10 +68,10 @@ public class PluginEventListener extends PluginObject implements Listener {
             int new_value = life_value - 1;
             Config.set(e.getPlayer().getName(), new_value);
             Plugin.saveConfig();
-            if (new_value == 0) {
-                e.setKeepInventory(false);
-                e.setDeathMessage("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束");
-            }
+        }
+        if (Config.getInt(e.getPlayer().getName()) == 0) {
+            e.setKeepInventory(false);
+            e.setDeathMessage("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束");
         }
     }
 }

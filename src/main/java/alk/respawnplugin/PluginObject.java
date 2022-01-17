@@ -24,7 +24,6 @@ public abstract class PluginObject {
         Logger = Plugin.getLog4JLogger();
         Config = Plugin.getConfig();
 
-        titleHealthRunOut = new TextComponent("\uE036 你的死亡回归加护已被耗尽，请等待下一轮回开始");
-        titleHealthRemaining = new TextComponent("\uE010 你的死亡回归加护剩余 \uEE46 * " + RemainingHealth);
+        titleHealthRunOut = new TextComponent("\uE45A 你的死亡回归加护已被耗尽，请等待下一轮回开始");
     }
 }
