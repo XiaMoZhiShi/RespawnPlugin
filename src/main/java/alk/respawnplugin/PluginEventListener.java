@@ -1,20 +1,23 @@
 package alk.respawnplugin;
 
 import com.destroystokyo.paper.event.player.PlayerSetSpawnEvent;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+
+import java.time.Duration;
 
 public class PluginEventListener extends PluginObject implements Listener {
     Integer defaultValue = (Integer) Config.get("default-value");
@@ -59,8 +62,33 @@ public class PluginEventListener extends PluginObject implements Listener {
             e.getPlayer().setGameMode(GameMode.SPECTATOR);
             e.getPlayer().sendTitlePart(TitlePart.SUBTITLE, titleHealthRunOut);
         } else {
-            e.getPlayer().sendTitlePart(TitlePart.TITLE, titleRespawn);
-            e.getPlayer().sendTitlePart(TitlePart.SUBTITLE, titleHealthRemaining);
+            if (floodgateApi.isFloodgatePlayer(e.getPlayer().getUniqueId())){
+                //还没想好怎么实现基岩版的音效处理
+            } else {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        blindPotion.apply(e.getPlayer());
+                        slownessPotion.apply(e.getPlayer());
+                        e.getPlayer().playSound(Sound.sound(Key.key("xmzs", "player.respawn.1"), Sound.Source.MASTER, 1, 1));
+                    }
+                }.runTaskLater(Plugin, 1);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        e.getPlayer().playSound(Sound.sound(Key.key("xmzs", "player.respawn.2"), Sound.Source.MASTER, 1, 1));
+                    }
+                }.runTaskLater(Plugin, 180);
+            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    long times[] = new long[] {100, 2000, 100};
+                    e.getPlayer().sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ofMillis(times[0]), Duration.ofMillis(times[1]), Duration.ofMillis(times[2])));
+                    e.getPlayer().sendTitlePart(TitlePart.TITLE, titleRespawn);
+                    e.getPlayer().sendTitlePart(TitlePart.SUBTITLE, titleHealthRemaining);
+                }
+            }.runTaskLater(Plugin, 180);
         }
 
         if (life_value >= 0 && e.getPlayer().getGameMode() == GameMode.SPECTATOR){

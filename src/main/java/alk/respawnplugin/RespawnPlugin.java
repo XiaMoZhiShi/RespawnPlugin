@@ -4,6 +4,8 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.geysermc.floodgate.api.FloodgateApi;
+
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,6 +43,7 @@ public final class RespawnPlugin extends JavaPlugin {
     private Logger logger;
     private PluginEventListener listener;
     private HealthControl healthControl;
+    private FloodgateApi floodgateApi;
 
     public RespawnPlugin()
     {
@@ -49,6 +52,7 @@ public final class RespawnPlugin extends JavaPlugin {
 
         logger = this.getLog4JLogger();
         DataFolder = this.getDataFolder();
+        floodgateApi = FloodgateApi.getInstance();
         ConfigFile = new File(DataFolder, "data.yml");
         listener = new PluginEventListener();
         healthControl = new HealthControl();
