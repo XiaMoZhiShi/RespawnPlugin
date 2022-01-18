@@ -1,5 +1,6 @@
 package alk.respawnplugin;
 
+import alk.respawnplugin.Commands.*;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -69,9 +70,15 @@ public final class RespawnPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
 
         //注册 respawnset 指令
-        if (Bukkit.getPluginCommand(CommandRespawnset.CommandName) != null) {
-            Bukkit.getPluginCommand(CommandRespawnset.CommandName).setExecutor(new CommandRespawnset());
-        }
+        registerCommand(new CommandRespawnset());
+    }
+
+    private void registerCommand(PluginCommandExecutor command)
+    {
+        String commandName = command.GetCommandName();
+
+        if (Bukkit.getPluginCommand(commandName) != null)
+            Bukkit.getPluginCommand(commandName).setExecutor(command);
     }
 
     @Override

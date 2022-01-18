@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -21,9 +22,11 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.geysermc.cumulus.Form;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
+import java.util.UUID;
 
 public class PluginEventListener extends PluginObject implements Listener {
     Integer defaultValue = (Integer) Config.get("default-value");
@@ -84,25 +87,22 @@ public class PluginEventListener extends PluginObject implements Listener {
                     public void run() {
                         player.addPotionEffect(blindPotion);
                         player.addPotionEffect(slownessPotion);
-                        player.playSound(Sound.sound(Key.key("xmzs", "player.respawn.1"), Sound.Source.MASTER, 1, 1));
+                        player.playSound(Sounds.RespawnParse1);
                     }
                 }.runTaskLater(Plugin, 1);
+
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        player.playSound(Sound.sound(Key.key("xmzs", "player.respawn.2"), Sound.Source.MASTER, 1, 1));
+                        player.playSound(Sounds.RespawnParse2);
+
+                        long[] times = new long[] {100, 2000, 100};
+                        player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ofMillis(times[0]), Duration.ofMillis(times[1]), Duration.ofMillis(times[2])));
+                        player.sendTitlePart(TitlePart.TITLE, titleRespawn);
+                        player.sendTitlePart(TitlePart.SUBTITLE, titleHealthRemaining);
                     }
                 }.runTaskLater(Plugin, 180);
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    long[] times = new long[] {100, 2000, 100};
-                    player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ofMillis(times[0]), Duration.ofMillis(times[1]), Duration.ofMillis(times[2])));
-                    player.sendTitlePart(TitlePart.TITLE, titleRespawn);
-                    player.sendTitlePart(TitlePart.SUBTITLE, titleHealthRemaining);
-                }
-            }.runTaskLater(Plugin, 180);
         }
 
         if (lifeRemaining >= 0 && player.getGameMode() == GameMode.SPECTATOR){
@@ -116,14 +116,15 @@ public class PluginEventListener extends PluginObject implements Listener {
     public void onPlayerDeath(@NotNull PlayerDeathEvent e)
     {
         Logger.info(e.getEntity().getName() + " Death!");
-        int life_value = Config.getInt(e.getPlayer().getName());
+        int lifeRemaining = Config.getInt(e.getPlayer().getName());
 
-        if ( life_value >= 0 ) {
-            int new_value = life_value - 1;
-            Config.set(e.getPlayer().getName(), new_value);
+        if ( lifeRemaining >= 0 ) {
+            lifeRemaining--;
+            Config.set(e.getPlayer().getName(), lifeRemaining);
             Plugin.saveConfig();
         }
-        if (life_value == -1) {
+
+        if (lifeRemaining == -1) {
             e.setKeepInventory(false);
             e.deathMessage(Component.text("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束"));
         }
@@ -140,11 +141,12 @@ public class PluginEventListener extends PluginObject implements Listener {
                 //今日份迫害村民
                 if ( e.getEntity().getKiller() != null){
                     if ( 0.2 < Math.random()){
-                        int lifevalue = Config.getInt(e.getEntity().getKiller().getName());
-                        int newValue = lifevalue + 1;
-                        Config.set(e.getEntity().getKiller().getName(), newValue);
+                        int currentLifeRemaining = Config.getInt(e.getEntity().getKiller().getName());
+                        currentLifeRemaining++;
+
+                        Config.set(e.getEntity().getKiller().getName(), currentLifeRemaining);
                         Plugin.saveConfig();
-                        e.getEntity().getKiller().sendMessage("\uE461 你的死亡回归加护次数 \uE46E + 1， 你当前剩余 \uE46E * " + newValue);
+                        e.getEntity().getKiller().sendMessage("\uE461 你的死亡回归加护次数 \uE46E + 1， 你当前剩余 \uE46E * " + currentLifeRemaining);
                     }
                 }
             }

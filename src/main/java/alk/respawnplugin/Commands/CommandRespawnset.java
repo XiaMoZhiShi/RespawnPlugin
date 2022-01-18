@@ -1,16 +1,20 @@
-package alk.respawnplugin;
+package alk.respawnplugin.Commands;
 
+import alk.respawnplugin.PluginObject;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class CommandRespawnset extends PluginObject implements CommandExecutor {
-    public static String CommandName = "respawnset";
+public class CommandRespawnset extends PluginObject implements PluginCommandExecutor {
+    @Override
+    public String GetCommandName()
+    {
+        return "respawnset";
+    }
 
     @Override
     @ParametersAreNonnullByDefault
