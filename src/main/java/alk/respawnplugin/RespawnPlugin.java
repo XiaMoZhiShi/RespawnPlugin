@@ -40,6 +40,7 @@ public final class RespawnPlugin extends JavaPlugin {
 
     private Logger logger;
     private PluginEventListener listener;
+    private HealthControl healthControl;
 
     public RespawnPlugin()
     {
@@ -50,6 +51,7 @@ public final class RespawnPlugin extends JavaPlugin {
         DataFolder = this.getDataFolder();
         ConfigFile = new File(DataFolder, "data.yml");
         listener = new PluginEventListener();
+        healthControl = new HealthControl();
     }
 
     @Override
@@ -65,6 +67,7 @@ public final class RespawnPlugin extends JavaPlugin {
 
         //注册Listener
         Bukkit.getPluginManager().registerEvents(listener, this);
+        Bukkit.getPluginManager().registerEvents(healthControl, this);
 
         //注册 respawnset 指令
         if (Bukkit.getPluginCommand("respawnset") != null) {
