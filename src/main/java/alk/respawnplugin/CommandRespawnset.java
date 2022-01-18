@@ -10,16 +10,20 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class CommandRespawnset extends PluginObject implements CommandExecutor {
+    public static String CommandName = "respawnset";
+
     @Override
     @ParametersAreNonnullByDefault
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (strings.length == 0) {
+        if (strings.length != 2) {
             return false;
         }
+
         Player player = Bukkit.getPlayer(strings[0]);
         if (player == null){
             return false;
         }
+
         int newValue = Integer.parseInt(strings[1]);
         Config.set(player.getName(), newValue);
         Plugin.saveConfig();
