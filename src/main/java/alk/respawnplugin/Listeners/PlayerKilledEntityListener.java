@@ -1,5 +1,6 @@
-package alk.respawnplugin;
+package alk.respawnplugin.Listeners;
 
+import alk.respawnplugin.PluginObject;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
@@ -8,9 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class HealthControl extends PluginObject implements Listener {
+public class PlayerKilledEntityListener extends PluginObject implements Listener {
+
     @EventHandler
-    public void onPlayerKillVillagers(@NotNull EntityDeathEvent e){
+    public void onPlayerKillEntity(@NotNull EntityDeathEvent e){
         Entity deathEntity = e.getEntity();
         if (deathEntity.getType() == EntityType.VILLAGER){
             Villager vi = (Villager) deathEntity;
@@ -20,11 +22,12 @@ public class HealthControl extends PluginObject implements Listener {
                 //今日份迫害村民
                 if ( e.getEntity().getKiller() != null){
                     if ( 0.2 < Math.random()){
-                        int lifevalue = Config.getInt(e.getEntity().getKiller().getName());
-                        int newValue = lifevalue + 1;
-                        Config.set(e.getEntity().getKiller().getName(), newValue);
+                        int currentLifeRemaining = Config.getInt(e.getEntity().getKiller().getName());
+                        currentLifeRemaining++;
+
+                        Config.set(e.getEntity().getKiller().getName(), currentLifeRemaining);
                         Plugin.saveConfig();
-                        e.getEntity().getKiller().sendMessage("\uE461 你的死亡回归加护次数 \uE46E + 1， 你当前剩余 \uE46E * " + newValue);
+                        e.getEntity().getKiller().sendMessage("\uE461 你的死亡回归加护次数 \uE46E + 1， 你当前剩余 \uE46E * " + currentLifeRemaining);
                     }
                 }
             }

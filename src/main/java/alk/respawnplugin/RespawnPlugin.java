@@ -1,14 +1,14 @@
 package alk.respawnplugin;
 
+import alk.respawnplugin.Commands.*;
+import alk.respawnplugin.Listeners.GenericPluginEventListener;
+import alk.respawnplugin.Listeners.PlayerKilledEntityListener;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.geysermc.floodgate.api.FloodgateApi;
 
 import java.io.File;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class RespawnPlugin extends JavaPlugin {
     /**
@@ -17,10 +17,16 @@ public final class RespawnPlugin extends JavaPlugin {
     private static RespawnPlugin instance;
 
     /**
-     * 获取插件实例
+     * 获取插件实例，用于初始化PluginObject
      * @return 插件实例
      */
     public static RespawnPlugin GetInstance() { return instance; }
+
+    /**
+     * 获取Floodgate接口，用于初始化PluginObject
+     * @return FloodgateApi
+     */
+    public FloodgateApi GetFloodgateAPI() { return floodgate; }
 
     /**
      * 数据目录
@@ -32,30 +38,19 @@ public final class RespawnPlugin extends JavaPlugin {
      */
     public File ConfigFile;
 
-    /**
-     * 一个 玩家-玩家 词典，用来记录玩家请求
-     * Key: 发起玩家
-     * Value: 目标玩家
-     */
-    //Lin: Dictionary<Player, Player>?
-    public final Map<Player, Player> RequestCommandPlayerMap = new ConcurrentHashMap<>();
-
-    private Logger logger;
-    private PluginEventListener listener;
-    private HealthControl healthControl;
-    private FloodgateApi floodgateApi;
+    private final Logger logger;
+    private static FloodgateApi floodgate;
 
     public RespawnPlugin()
     {
         //设置 instance，确保instance在被调用前不会是null
         instance = this;
 
+        //在这行下面初始化依赖
         logger = this.getLog4JLogger();
         DataFolder = this.getDataFolder();
-        floodgateApi = FloodgateApi.getInstance();
+        floodgate = FloodgateApi.getInstance();
         ConfigFile = new File(DataFolder, "data.yml");
-        listener = new PluginEventListener();
-        healthControl = new HealthControl();
     }
 
     @Override
@@ -70,13 +65,19 @@ public final class RespawnPlugin extends JavaPlugin {
         saveResource("data.yml", false);
 
         //注册Listener
-        Bukkit.getPluginManager().registerEvents(listener, this);
-        Bukkit.getPluginManager().registerEvents(healthControl, this);
+        Bukkit.getPluginManager().registerEvents(new GenericPluginEventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerKilledEntityListener(), this);
 
         //注册 respawnset 指令
-        if (Bukkit.getPluginCommand("respawnset") != null) {
-            Bukkit.getPluginCommand("respawnset").setExecutor(new CommandRespawnset());
-        }
+        registerCommand(new CommandRespawnset());
+    }
+
+    private void registerCommand(PluginCommandExecutor command)
+    {
+        String commandName = command.GetCommandName();
+
+        if (Bukkit.getPluginCommand(commandName) != null)
+            Bukkit.getPluginCommand(commandName).setExecutor(command);
     }
 
     @Override
