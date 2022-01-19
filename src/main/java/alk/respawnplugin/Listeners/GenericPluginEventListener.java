@@ -1,34 +1,27 @@
-package alk.respawnplugin;
+package alk.respawnplugin.Listeners;
 
+import alk.respawnplugin.PluginObject;
+import alk.respawnplugin.Sounds;
 import com.destroystokyo.paper.event.player.PlayerSetSpawnEvent;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.geysermc.cumulus.Form;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
-import java.util.UUID;
 
-public class PluginEventListener extends PluginObject implements Listener {
+public class GenericPluginEventListener extends PluginObject implements Listener {
     Integer defaultValue = (Integer) Config.get("default-value");
 
     @EventHandler
@@ -57,6 +50,10 @@ public class PluginEventListener extends PluginObject implements Listener {
     }
 
     //region 玩家重生
+    @FunctionalInterface
+    interface OnPlayerRespawn<PlayerRespawnEvent> {
+        void Run();
+    }
 
     private final TextComponent titleHealthRunOut = Component.text("\uE45A 你的死亡回归加护已被耗尽，请等待下一轮回开始");
     private final TextComponent titleRespawn = Component.text("\uE426 死亡回归发动 \uE426");
@@ -127,29 +124,6 @@ public class PluginEventListener extends PluginObject implements Listener {
         if (lifeRemaining == -1) {
             e.setKeepInventory(false);
             e.deathMessage(Component.text("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束"));
-        }
-    }
-
-    @EventHandler
-    public void onPlayerKillEntity(@NotNull EntityDeathEvent e){
-        Entity deathEntity = e.getEntity();
-        if (deathEntity.getType() == EntityType.VILLAGER){
-            Villager vi = (Villager) deathEntity;
-            if (vi.isAdult()){
-                //不要男妈妈不要男妈妈
-            } else {
-                //今日份迫害村民
-                if ( e.getEntity().getKiller() != null){
-                    if ( 0.2 < Math.random()){
-                        int currentLifeRemaining = Config.getInt(e.getEntity().getKiller().getName());
-                        currentLifeRemaining++;
-
-                        Config.set(e.getEntity().getKiller().getName(), currentLifeRemaining);
-                        Plugin.saveConfig();
-                        e.getEntity().getKiller().sendMessage("\uE461 你的死亡回归加护次数 \uE46E + 1， 你当前剩余 \uE46E * " + currentLifeRemaining);
-                    }
-                }
-            }
         }
     }
 }

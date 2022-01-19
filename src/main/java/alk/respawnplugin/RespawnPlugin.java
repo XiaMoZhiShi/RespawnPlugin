@@ -1,6 +1,8 @@
 package alk.respawnplugin;
 
 import alk.respawnplugin.Commands.*;
+import alk.respawnplugin.Listeners.GenericPluginEventListener;
+import alk.respawnplugin.Listeners.PlayerKilledEntityListener;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,7 +39,6 @@ public final class RespawnPlugin extends JavaPlugin {
     public File ConfigFile;
 
     private final Logger logger;
-    private final PluginEventListener listener;
     private static FloodgateApi floodgate;
 
     public RespawnPlugin()
@@ -50,9 +51,6 @@ public final class RespawnPlugin extends JavaPlugin {
         DataFolder = this.getDataFolder();
         floodgate = FloodgateApi.getInstance();
         ConfigFile = new File(DataFolder, "data.yml");
-
-        //在这行下面初始化功能
-        listener = new PluginEventListener();
     }
 
     @Override
@@ -67,7 +65,8 @@ public final class RespawnPlugin extends JavaPlugin {
         saveResource("data.yml", false);
 
         //注册Listener
-        Bukkit.getPluginManager().registerEvents(listener, this);
+        Bukkit.getPluginManager().registerEvents(new GenericPluginEventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerKilledEntityListener(), this);
 
         //注册 respawnset 指令
         registerCommand(new CommandRespawnset());
