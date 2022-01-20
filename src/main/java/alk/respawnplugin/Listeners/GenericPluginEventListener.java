@@ -43,15 +43,15 @@ public class GenericPluginEventListener extends PluginObject implements Listener
 
     @EventHandler
     public void onPlayerSetSpawn(@NotNull PlayerSetSpawnEvent e){
-        if ( e.getCause() == PlayerSetSpawnEvent.Cause.BED || e.getCause() == PlayerSetSpawnEvent.Cause.RESPAWN_ANCHOR ){
+        if ( e.getCause() == PlayerSetSpawnEvent.Cause.BED || e.getCause() == PlayerSetSpawnEvent.Cause.RESPAWN_ANCHOR ) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage("\uE410你的重生点不会被更改\uE410");
+            e.getPlayer().sendMessage("\uE310你的重生点不会被更改\uE310");
         }
     }
 
     //region 玩家重生
-    private final TextComponent titleHealthRunOut = Component.text("\uE45A 你的死亡回归加护已被耗尽，请等待下一轮回开始");
-    private final TextComponent titleRespawn = Component.text("\uE426 死亡回归发动 \uE426");
+    private final TextComponent titleHealthRunOut = Component.text("\uE35A 你的死亡回归加护已被耗尽，请等待下一轮回开始");
+    private final TextComponent titleRespawn = Component.text("\uE326 死亡回归发动 \uE326");
 
     protected PotionEffect blindPotion = new PotionEffect(PotionEffectType.BLINDNESS, 180, 0, false, false, false);
     protected PotionEffect slownessPotion = new PotionEffect(PotionEffectType.SLOW, 180, 3, false, false, false);
@@ -65,7 +65,7 @@ public class GenericPluginEventListener extends PluginObject implements Listener
 
         int lifeRemaining = Config.getInt(player.getName());
 
-        var titleHealthRemaining = Component.text("\uE461 你的死亡回归加护剩余 \uE46E * " + lifeRemaining);
+        var titleHealthRemaining = Component.text("\uE361 你的死亡回归加护剩余 \uE36E * " + lifeRemaining);
 
         if (lifeRemaining <= -1){
             player.setGameMode(GameMode.SPECTATOR);
@@ -118,7 +118,7 @@ public class GenericPluginEventListener extends PluginObject implements Listener
 
         if (lifeRemaining == -1) {
             e.setKeepInventory(false);
-            e.deathMessage(Component.text("\uE464 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束"));
+            e.deathMessage(Component.text("\uE364 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束"));
         }
     }
 }
