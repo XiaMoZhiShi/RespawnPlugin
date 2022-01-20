@@ -27,7 +27,7 @@ public class PlayerKilledEntityListener extends PluginObject implements Listener
 
                         Config.set(e.getEntity().getKiller().getName(), currentLifeRemaining);
                         Plugin.saveConfig();
-                        e.getEntity().getKiller().sendMessage("\uE461 你的死亡回归加护次数 \uE46E + 1， 你当前剩余 \uE46E * " + currentLifeRemaining);
+                        e.getEntity().getKiller().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
                     }
                 }
             }
