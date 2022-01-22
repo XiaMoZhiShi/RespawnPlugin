@@ -7,10 +7,12 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -56,6 +58,26 @@ public class PlayerKilledEntityListener extends PluginObject implements Listener
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(@NotNull PlayerRespawnEvent e) {
+        Player player = e.getPlayer();
+        int lifeRemaining = Config.getInt(player.getName());
+        if (lifeRemaining <= -1) {
+            int time = Config.getInt("wait-time");
+            int tick = time * 60 * 20;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Integer defaultValue = (Integer) Config.get("default-value");
+                    Config.set(e.getPlayer().getName(), defaultValue);
+                    if (e.getPlayer().isOnline()) {
+                        e.getPlayer().setHealth((double) 0);
+                    }
+                }
+            }.runTaskLaterAsynchronously(Plugin, tick);
         }
     }
 }

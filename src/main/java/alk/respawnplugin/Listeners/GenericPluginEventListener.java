@@ -39,6 +39,11 @@ public class GenericPluginEventListener extends PluginObject implements Listener
             //保存
             Plugin.saveConfig();
         }
+
+        int lifeRemaining = Config.getInt(e.getPlayer().getName());
+        if (lifeRemaining >= 0) {
+            e.getPlayer().setGameMode(GameMode.SURVIVAL);
+        }
     }
 
     @EventHandler

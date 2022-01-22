@@ -1,1 +1,2 @@
 default-value: 3 #The default life value of new player.
+wait-time: 1440 #The default time that a death player takes to respawn (minute)
