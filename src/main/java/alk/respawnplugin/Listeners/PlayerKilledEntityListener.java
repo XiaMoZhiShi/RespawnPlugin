@@ -77,7 +77,7 @@ public class PlayerKilledEntityListener extends PluginObject implements Listener
                         e.getPlayer().setHealth((double) 0);
                     }
                 }
-            }.runTaskLaterAsynchronously(Plugin, tick);
+            }.runTaskLater(Plugin, tick);
         }
     }
 }
