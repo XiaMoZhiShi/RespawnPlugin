@@ -13,4 +13,14 @@ public class Sounds {
             Sound.Source.VOICE,
             1,
             1);
+
+    public  static  Sound RespawnParseBedrock1 = Sound.sound(Key.key("player.respawn.1"),
+            Sound.Source.VOICE,
+            1,
+            1);
+
+    public  static  Sound RespawnParseBedrock2 = Sound.sound(Key.key("player.respawn.2"),
+            Sound.Source.VOICE,
+            1,
+            1);
 }

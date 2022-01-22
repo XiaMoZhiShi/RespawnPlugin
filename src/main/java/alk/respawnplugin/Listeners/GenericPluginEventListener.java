@@ -71,14 +71,40 @@ public class GenericPluginEventListener extends PluginObject implements Listener
             player.setGameMode(GameMode.SPECTATOR);
             player.sendTitlePart(TitlePart.SUBTITLE, titleHealthRunOut);
         } else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.addPotionEffect(blindPotion);
+                    player.addPotionEffect(slownessPotion);
+                }
+            }.runTaskLater(Plugin, 1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    long[] times = new long[] {100, 2000, 100};
+                    player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ofMillis(times[0]), Duration.ofMillis(times[1]), Duration.ofMillis(times[2])));
+                    player.sendTitlePart(TitlePart.TITLE, titleRespawn);
+                    player.sendTitlePart(TitlePart.SUBTITLE, titleHealthRemaining);
+                }
+            }.runTaskLater(Plugin, 180);
+
             if (Floodgate.isFloodgatePlayer(player.getUniqueId())){
-                //还没想好怎么实现基岩版的音效处理
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.playSound(Sounds.RespawnParseBedrock1);
+                    }
+                }.runTaskLater(Plugin, 1);
+                new  BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.playSound(Sounds.RespawnParseBedrock2);
+                    }
+                }.runTaskLater(Plugin, 180);
             } else {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        player.addPotionEffect(blindPotion);
-                        player.addPotionEffect(slownessPotion);
                         player.playSound(Sounds.RespawnParse1);
                     }
                 }.runTaskLater(Plugin, 1);
@@ -87,11 +113,6 @@ public class GenericPluginEventListener extends PluginObject implements Listener
                     @Override
                     public void run() {
                         player.playSound(Sounds.RespawnParse2);
-
-                        long[] times = new long[] {100, 2000, 100};
-                        player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ofMillis(times[0]), Duration.ofMillis(times[1]), Duration.ofMillis(times[2])));
-                        player.sendTitlePart(TitlePart.TITLE, titleRespawn);
-                        player.sendTitlePart(TitlePart.SUBTITLE, titleHealthRemaining);
                     }
                 }.runTaskLater(Plugin, 180);
             }
