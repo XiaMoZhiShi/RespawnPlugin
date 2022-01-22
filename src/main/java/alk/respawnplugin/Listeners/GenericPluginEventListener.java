@@ -81,6 +81,7 @@ public class GenericPluginEventListener extends PluginObject implements Listener
                 public void run() {
                     player.addPotionEffect(blindPotion);
                     player.addPotionEffect(slownessPotion);
+                    player.performCommand("guild home");
                 }
             }.runTaskLater(Plugin, 1);
             new BukkitRunnable() {
