@@ -141,6 +141,8 @@ public class GenericPluginEventListener extends PluginObject implements Listener
             lifeRemaining--;
             Config.set(e.getPlayer().getName(), lifeRemaining);
             Plugin.saveConfig();
+            e.setKeepInventory(true);
+            e.getDrops().clear();
         }
 
         if (lifeRemaining == -1) {
