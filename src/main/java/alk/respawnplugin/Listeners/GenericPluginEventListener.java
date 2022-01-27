@@ -141,11 +141,12 @@ public class GenericPluginEventListener extends PluginObject implements Listener
             lifeRemaining--;
             Config.set(e.getPlayer().getName(), lifeRemaining);
             Plugin.saveConfig();
-            e.setKeepInventory(true);
-            e.getDrops().clear();
         }
 
-        if (lifeRemaining == -1) {
+        if (lifeRemaining-- >= 0) {
+            e.setKeepInventory(true);
+            e.getDrops().clear();
+        } else {
             e.setKeepInventory(false);
             e.deathMessage(Component.text("\uE364 " + e.getPlayer().getName() + " 死亡回归加护已耗尽，轮回结束"));
         }
