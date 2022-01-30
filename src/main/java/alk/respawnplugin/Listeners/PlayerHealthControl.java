@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,7 +13,9 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -58,6 +61,18 @@ public class PlayerHealthControl extends PluginObject implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onFoodLevelChangeEvent(@NotNull FoodLevelChangeEvent e){
+        ItemStack goldenApple = new ItemStack(Material.GOLDEN_APPLE);
+        if (e.getItem() == goldenApple && 0.5 < Math.random()){
+            int currentLifeRemaining = Config.getInt(e.getEntity().getKiller().getName());
+            currentLifeRemaining++;
+            Config.set(e.getEntity().getKiller().getName(), currentLifeRemaining);
+            Plugin.saveConfig();
+            e.getEntity().getKiller().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
         }
     }
 
