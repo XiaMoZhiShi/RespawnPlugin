@@ -2,7 +2,7 @@ package alk.respawnplugin;
 
 import alk.respawnplugin.Commands.*;
 import alk.respawnplugin.Listeners.GenericPluginEventListener;
-import alk.respawnplugin.Listeners.PlayerKilledEntityListener;
+import alk.respawnplugin.Listeners.PlayerHealthControl;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -66,7 +66,7 @@ public final class RespawnPlugin extends JavaPlugin {
 
         //注册Listener
         Bukkit.getPluginManager().registerEvents(new GenericPluginEventListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerKilledEntityListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerHealthControl(), this);
 
         //注册 respawnset 指令
         registerCommand(new CommandRespawnset());

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 
-public class PlayerKilledEntityListener extends PluginObject implements Listener {
+public class PlayerHealthControl extends PluginObject implements Listener {
 
     @EventHandler
     public void onPlayerKillEntity(@NotNull EntityDeathEvent e){
@@ -79,5 +79,6 @@ public class PlayerKilledEntityListener extends PluginObject implements Listener
                 }
             }.runTaskLater(Plugin, tick);
         }
+        e.getPlayer().setMaxHealth((double) 20 + lifeRemaining * 2);
     }
 }
