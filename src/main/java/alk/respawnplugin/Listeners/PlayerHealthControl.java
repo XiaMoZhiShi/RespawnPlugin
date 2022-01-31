@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -65,14 +66,14 @@ public class PlayerHealthControl extends PluginObject implements Listener {
     }
 
     @EventHandler
-    public void onFoodLevelChangeEvent(@NotNull FoodLevelChangeEvent e){
-        ItemStack goldenApple = new ItemStack(Material.GOLDEN_APPLE);
-        if (e.getItem() == goldenApple && 0.5 < Math.random()){
-            int currentLifeRemaining = Config.getInt(e.getEntity().getKiller().getName());
+    public void onItemConsume(@NotNull PlayerItemConsumeEvent e){
+        if (e.getItem().getType() == Material.GOLDEN_APPLE && Math.random() <= 0.5){
+            String playerName = e.getPlayer().getName();
+            int currentLifeRemaining = Config.getInt(playerName);
             currentLifeRemaining++;
-            Config.set(e.getEntity().getKiller().getName(), currentLifeRemaining);
+            Config.set(playerName, currentLifeRemaining);
             Plugin.saveConfig();
-            e.getEntity().getKiller().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
+            e.getPlayer().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
         }
     }
 
