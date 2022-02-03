@@ -88,13 +88,14 @@ public class PlayerHealthControl extends PluginObject implements Listener {
                 @Override
                 public void run() {
                     Integer defaultValue = (Integer) Config.get("default-value");
-                    Config.set(e.getPlayer().getName(), defaultValue);
-                    if (e.getPlayer().isOnline()) {
-                        e.getPlayer().setHealth((double) 0);
+                    Config.set(player.getName(), defaultValue);
+                    if (player.isOnline()) {
+                        player.setHealth((double) 0);
                     }
                 }
             }.runTaskLater(Plugin, tick);
         }
-        e.getPlayer().setMaxHealth((double) 20 + lifeRemaining * 2);
+
+        player.setMaxHealth(Math.min(20 + lifeRemaining * 2, 40));
     }
 }
