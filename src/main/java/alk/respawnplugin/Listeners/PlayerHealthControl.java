@@ -44,36 +44,44 @@ public class PlayerHealthControl extends PluginObject implements Listener {
                         int currentLifeRemaining = Config.getInt(e.getEntity().getKiller().getName());
                         currentLifeRemaining++;
 
-                        Config.set(e.getEntity().getKiller().getName(), currentLifeRemaining);
+                        Config.set(e.getEntity().getKiller().getName(), Math.min(currentLifeRemaining, 20));
                         Plugin.saveConfig();
-                        e.getEntity().getKiller().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
-                        e.getEntity().getKiller().sendMessage("虽然你续上了生命，但是你是否在内心泯灭了些什么？");
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                e.getEntity().getKiller().addPotionEffect(blindPotion);
-                                e.getEntity().getKiller().addPotionEffect(slownessPotion);
-                                long[] times = new long[] {100, 2800, 100};
-                                e.getEntity().getKiller().sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ofMillis(times[0]), Duration.ofMillis(times[1]), Duration.ofMillis(times[2])));
-                                e.getEntity().getKiller().sendTitlePart(TitlePart.TITLE, titleMain);
-                                e.getEntity().getKiller().sendTitlePart(TitlePart.SUBTITLE, titleSub);
-                            }
-                        }.runTaskLater(Plugin, 20);
+                        if (currentLifeRemaining <= 20) {
+                            e.getEntity().getKiller().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
+                            e.getEntity().getKiller().sendMessage("虽然你续上了生命，但是你是否在内心泯灭了些什么？");
+                        } else {
+                            e.getEntity().getKiller().sendMessage("\uE361 你的死亡回归次数已达上限");
+                        }
                     }
                 }
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        e.getEntity().getKiller().addPotionEffect(blindPotion);
+                        e.getEntity().getKiller().addPotionEffect(slownessPotion);
+                        long[] times = new long[] {100, 2800, 100};
+                        e.getEntity().getKiller().sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ofMillis(times[0]), Duration.ofMillis(times[1]), Duration.ofMillis(times[2])));
+                        e.getEntity().getKiller().sendTitlePart(TitlePart.TITLE, titleMain);
+                        e.getEntity().getKiller().sendTitlePart(TitlePart.SUBTITLE, titleSub);
+                    }
+                }.runTaskLater(Plugin, 20);
             }
         }
     }
 
     @EventHandler
     public void onItemConsume(@NotNull PlayerItemConsumeEvent e){
-        if (e.getItem().getType() == Material.GOLDEN_APPLE && Math.random() <= 0.5){
+        if (e.getItem().getType() == Material.GOLDEN_APPLE && Math.random() <= 0.2){
             String playerName = e.getPlayer().getName();
             int currentLifeRemaining = Config.getInt(playerName);
             currentLifeRemaining++;
-            Config.set(playerName, currentLifeRemaining);
+            Config.set(playerName, Math.min(currentLifeRemaining, 20));
             Plugin.saveConfig();
-            e.getPlayer().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
+            if (currentLifeRemaining <= 20) {
+                e.getPlayer().sendMessage("\uE361 你的死亡回归加护次数 \uE36E + 1， 你当前剩余 \uE36E * " + currentLifeRemaining);
+            } else {
+                e.getPlayer().sendMessage("\uE361 你的死亡回归次数已达上限");
+            }
         }
     }
 
